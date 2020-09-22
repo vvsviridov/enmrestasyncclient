@@ -16,7 +16,7 @@ class EnmRestAsyncSession():
         logging.info(f'Connecting to {enm} as {login}')
 
     async def __aenter__(self):
-        connector = aiohttp.TCPConnector(ssl=False)
+        connector = aiohttp.TCPConnector(ssl=False, limit=20)
         self.session = aiohttp.ClientSession(connector=connector)
         login_dict = {'IDToken1': self.login, 'IDToken2': self.password}
         resp = await self.session.post(f'{self.enm}login', params=login_dict)
@@ -39,6 +39,6 @@ class EnmRestAsyncSession():
                 return resp_json
             except Exception as e:
                 logging.critical(repr(e))
-                logging.critical(response.status)
-                logging.critical(response.text())
+                logging.critical(await response.status)
+                logging.critical(await response.text())
                 raise(e)

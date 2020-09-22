@@ -51,10 +51,11 @@ async def get_cell_status(sess, cell_fdn):
 
 
 async def main():
+    URL = environ['enm_url']
     USER = environ['enm_user']
     PASS = environ['enm_pass']
     async with EnmRestAsyncSession(
-        'https://enm6.enm.tele2.ru/',
+        URL,
         USER,
         PASS
     ) as erc:

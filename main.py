@@ -57,7 +57,7 @@ async def main():
     async with EnmRestAsyncSession(
         URL,
         USER,
-        PASS
+        PASS,
     ) as erc:
         tasks = []
         for bs in bs_list('NodesBS.txt'):

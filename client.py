@@ -7,16 +7,17 @@ logging.getLogger(__name__)
 
 class EnmRestAsyncSession():
 
-    def __init__(self, enm, login, password):
+    def __init__(self, enm, login, password, limit=20):
         self.enm = enm if enm[-1] == "/" else f"{enm}/"
         self.session = None
         self.login = login
         self.password = password
         self.task = f'{self.enm}configuration-tasks/v1/tasks'
+        self.limit = limit
         logging.info(f'Connecting to {enm} as {login}')
 
     async def __aenter__(self):
-        connector = aiohttp.TCPConnector(ssl=False, limit=20)
+        connector = aiohttp.TCPConnector(ssl=False, limit=self.limit)
         self.session = aiohttp.ClientSession(connector=connector)
         login_dict = {'IDToken1': self.login, 'IDToken2': self.password}
         resp = await self.session.post(f'{self.enm}login', params=login_dict)
